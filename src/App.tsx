@@ -8,7 +8,6 @@ import React, { Component } from "react";
 import {
   Platform,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 
@@ -16,7 +15,12 @@ import {
 import I18n from "./res/i18n/I18n";
 
 // third party
+import { StyleProvider, Container, Header, Content, Body, Text, Icon } from "native-base";
 import Tts from "react-native-tts";
+
+// styles
+import getTheme from "../native-base-theme/components";
+import variables from "./res/themes/nativeBaseVariables";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" +
@@ -50,17 +54,25 @@ export default class App extends Component<{}> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native! (in TypeScript)
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.tsx
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <StyleProvider style={getTheme(variables)}>
+        <Container>
+          <Header>
+            <Body><Text>{I18n.t("app_name")}</Text></Body>
+          </Header>
+          <Content>
+            <Text style={styles.welcome}>
+              Welcome to React Native! (in TypeScript)
+            </Text>
+            <Text style={styles.instructions}>
+              To get started, edit App.tsx, compile on save
+            </Text>
+            <Text style={styles.instructions}>
+              {instructions}
+            </Text>
+            <Icon name="card-giftcard" />
+          </Content>
+        </Container>
+      </StyleProvider>
     );
   }
 }
