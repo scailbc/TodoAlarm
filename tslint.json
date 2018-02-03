@@ -75,7 +75,7 @@
       "trailing-comma": [
         true, {
           "multiline": "always",
-          "singleline": "always"
+          "singleline": "never"
         }
       ],
       "align": [true],

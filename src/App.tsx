@@ -9,8 +9,14 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
+
+// components
+import I18n from "./res/i18n/I18n";
+
+// third party
+import Tts from "react-native-tts";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" +
@@ -20,6 +26,28 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+  componentDidMount() {
+    setTimeout( () => {
+    Tts.setDefaultLanguage("it-IT");
+    Tts.speak("Incredibile, funziona " + I18n.t("app_name"));
+    Tts.voices().then(voices => console.log(voices));
+    // 0: {language: "spa-x-lvariant-f00", name: "es-ES-SMTf00", id: "es-ES-SMTf00"}id: "es-ES-SMTf00"language: "spa-x-lvariant-f00"name: "es-ES-SMTf00"__proto__: Object
+    // 1: {language: "eng-x-lvariant-f00", name: "en-US-SMTf00", id: "en-US-SMTf00"}id: "en-US-SMTf00"language: "eng-x-lvariant-f00"name: "en-US-SMTf00"__proto__: Object
+    // 2: {language: "deu-x-lvariant-f00", name: "de-DE-SMTf00", id: "de-DE-SMTf00"}
+    // 3: {language: "vie-x-lvariant-f00", name: "vi-VN-SMTf00", id: "vi-VN-SMTf00"}
+    // 4: {language: "fra-x-lvariant-f00", name: "fr-FR-SMTf00", id: "fr-FR-SMTf00"}
+    // 5: {language: "rus-x-lvariant-f00", name: "ru-RU-SMTf00", id: "ru-RU-SMTf00"}
+    // 6: {language: "ita-x-lvariant-f00", name: "it-IT-SMTf00", id: "it-IT-SMTf00"}
+    //   id: "it-IT-SMTf00"
+    //   language: "ita-x-lvariant-f00"
+    //   name: "it-IT-SMTf00"
+    //     __proto__: Object
+    //       constructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()get __proto__: ƒ __proto__()set __proto__: ƒ __proto__()
+    // 7: {language: "eng-x-lvariant-f00", name: "en-GB-SMTf00", id: "en-GB-SMTf00"}
+    // length: 8__proto__: Array(0)
+    }, 10000);
+  }
+
   render() {
     return (
       <View style={styles.container}>
