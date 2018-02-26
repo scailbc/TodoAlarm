@@ -13,10 +13,15 @@ import {
 
 // components
 import I18n from "./res/i18n/I18n";
+import { store, persistor } from "./res/configureStore";
 
 // third party
-import { StyleProvider, Container, Header, Content, Body, Text, Icon } from "native-base";
+import { StyleProvider, Container, Header, Content, Body, Text, Icon, Spinner } from "native-base";
 import Tts from "react-native-tts";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
+
+import { setAlarms, deleteAlarm } from "./actions/AlarmAction";
 
 // styles
 import getTheme from "../native-base-theme/components";
@@ -35,6 +40,8 @@ export default class App extends Component<{}> {
     Tts.setDefaultLanguage("it-IT");
     Tts.speak("Incredibile, funziona " + I18n.t("app_name"));
     Tts.voices().then(voices => console.log(voices));
+    store.dispatch(setAlarms(["uno", "due", "tre"]));
+    store.dispatch( deleteAlarm("due") );
     // 0: {language: "spa-x-lvariant-f00", name: "es-ES-SMTf00", id: "es-ES-SMTf00"}id: "es-ES-SMTf00"language: "spa-x-lvariant-f00"name: "es-ES-SMTf00"__proto__: Object
     // 1: {language: "eng-x-lvariant-f00", name: "en-US-SMTf00", id: "en-US-SMTf00"}id: "en-US-SMTf00"language: "eng-x-lvariant-f00"name: "en-US-SMTf00"__proto__: Object
     // 2: {language: "deu-x-lvariant-f00", name: "de-DE-SMTf00", id: "de-DE-SMTf00"}
@@ -54,25 +61,29 @@ export default class App extends Component<{}> {
 
   render() {
     return (
-      <StyleProvider style={getTheme(variables)}>
-        <Container>
-          <Header>
-            <Body><Text>{I18n.t("app_name")}</Text></Body>
-          </Header>
-          <Content>
-            <Text style={styles.welcome}>
-              Welcome to React Native! (in TypeScript)
-            </Text>
-            <Text style={styles.instructions}>
-              To get started, edit App.tsx, compile on save
-            </Text>
-            <Text style={styles.instructions}>
-              {instructions}
-            </Text>
-            <Icon name="card-giftcard" />
-          </Content>
-        </Container>
-      </StyleProvider>
+      <Provider store={store}>
+        <StyleProvider style={getTheme(variables)}>
+          <PersistGate loading={<Spinner />} persistor={persistor}>
+            <Container>
+              <Header>
+                <Body><Text>{I18n.t("app_name")}</Text></Body>
+              </Header>
+              <Content>
+                <Text style={styles.welcome}>
+                  Welcome to React Native! (in TypeScript)
+                </Text>
+                <Text style={styles.instructions}>
+                  To get started, edit App.tsx, compile on save
+                </Text>
+                <Text style={styles.instructions}>
+                  {instructions}
+                </Text>
+                <Icon name="card-giftcard" />
+              </Content>
+            </Container>
+          </PersistGate>
+        </StyleProvider>
+      </Provider>
     );
   }
 }
