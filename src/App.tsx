@@ -34,7 +34,7 @@ const instructions = Platform.select({
     "Shake or press menu button for dev menu",
 });
 
-export default class App extends Component<{}> {
+export default class App extends  Component<any, any> {
   componentDidMount() {
     setTimeout( () => {
     Tts.setDefaultLanguage("it-IT");

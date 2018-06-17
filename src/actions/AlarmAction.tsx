@@ -24,8 +24,8 @@ export function deleteAlarmAt(index: number): Redux.AnyAction {
  * Delete the given alarm from the list
  * @param alarm the alarm in the list to remove
  */
-export function deleteAlarm(alarm: any): ThunkAction<void, Function, void> {
-    return ( dispatch: Redux.Dispatch<any>, getState: Function) => {
+export function deleteAlarm(alarm: any): ThunkAction<void, any, void> {
+    return ( dispatch: Redux.Dispatch<any>, getState: () => any) => {
         let index = getState().alarm.alarms.indexOf(alarm);
         dispatch(deleteAlarmAt(index));
     };
