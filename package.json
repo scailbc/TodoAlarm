@@ -20,6 +20,7 @@
     "react-native-i18n": "2.0.10",
     "react-native-tts": "1.4.1",
     "react-native-typescript-transformer": "1.2.3",
+    "react-navigation": "2.3.1",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
