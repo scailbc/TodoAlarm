@@ -1,9 +1,11 @@
+import Alarm from "../models/Alarm";
+
 import { ALARM } from "./ActionTypes";
 
 import I18n from "../res/i18n/I18n";
 
 import * as Redux from "redux";
-import { ThunkAction } from "redux-thunk";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 
 /**
  * Delete the alarm at the given index from the list.
@@ -24,8 +26,8 @@ export function deleteAlarmAt(index: number): Redux.AnyAction {
  * Delete the given alarm from the list
  * @param alarm the alarm in the list to remove
  */
-export function deleteAlarm(alarm: any): ThunkAction<void, any, void> {
-    return ( dispatch: Redux.Dispatch<any>, getState: () => any) => {
+export function deleteAlarm(alarm: Alarm): ThunkAction<void, any, void, Redux.Action> {
+    return ( dispatch: ThunkDispatch<any, void, Redux.Action>, getState: () => any) => {
         let index = getState().alarm.alarms.indexOf(alarm);
         dispatch(deleteAlarmAt(index));
     };
@@ -35,7 +37,7 @@ export function deleteAlarm(alarm: any): ThunkAction<void, any, void> {
  * Set the whole list of alarms
  * @param alarms the new alarms list
  */
-export function setAlarms( alarms: Array<any> ): Redux.AnyAction {
+export function setAlarms( alarms: Array<Alarm> ): Redux.AnyAction {
     return {
         type: ALARM.SET,
         payload: alarms,

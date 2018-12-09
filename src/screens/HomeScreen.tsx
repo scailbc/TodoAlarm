@@ -4,6 +4,9 @@ import {
     View,
 } from "react-native";
 
+// models
+import Alarm from "../models/Alarm";
+
 // components
 import I18n from "../res/i18n/I18n";
 import { store } from "../res/configureStore";
@@ -32,8 +35,9 @@ export default class HomeScreen extends Component<HomeProps, any> {
             Tts.setDefaultLanguage("it-IT");
             Tts.speak("Incredibile, funziona " + I18n.t("app_name"));
             Tts.voices().then(voices => console.log(voices));
-            store.dispatch(setAlarms(["uno", "due", "tre"]));
-            store.dispatch(deleteAlarm("due"));
+            const alarms: Alarm[] = [new Alarm("uno"), new Alarm("due"), new Alarm("tre")];
+            store.dispatch(setAlarms(alarms));
+            store.dispatch(deleteAlarm(alarms[1]));
         }, 10000);
     }
 
