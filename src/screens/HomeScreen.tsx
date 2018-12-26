@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import {
-    StyleSheet,
-    View,
-} from "react-native";
+import {  FlatList,  StyleSheet } from "react-native";
 
 // models
 import Alarm from "../models/Alarm";
+import Day from "../models/Day";
 
 // components
+import AlarmItem from "../components/items/AlarmItem";
 import I18n from "../res/i18n/I18n";
 import { store } from "../res/configureStore";
 
 // third party
-import { Container, Header, Content, Body, Text, Icon } from "native-base";
+import { Container, Header, Content, Body, Text } from "native-base";
 import Tts from "react-native-tts";
 
 import { setAlarms, deleteAlarm } from "../actions/AlarmAction";
@@ -36,9 +35,19 @@ export default class HomeScreen extends Component<HomeProps, any> {
             Tts.speak("Incredibile, funziona " + I18n.t("app_name"));
             Tts.voices().then(voices => console.log(voices));
             const alarms: Alarm[] = [new Alarm("uno"), new Alarm("due"), new Alarm("tre")];
+            alarms.forEach( (a, index) => {
+                a.hour = index;
+                a.repeat = [Day.monday, Day.weekend];
+            });
             store.dispatch(setAlarms(alarms));
             store.dispatch(deleteAlarm(alarms[1]));
         }, 10000);
+    }
+
+    renderAlarms = ({ item }) => {
+        return (
+            <AlarmItem alarm={item} />
+        );
     }
 
     render() {
@@ -48,13 +57,10 @@ export default class HomeScreen extends Component<HomeProps, any> {
                     <Body><Text>{I18n.t("app_name")}</Text></Body>
                 </Header>
                 <Content>
-                    <Text style={styles.welcome}>
-                        Welcome to React Native! (in TypeScript)
-                </Text>
-                    <Text style={styles.instructions}>
-                        To get started, edit HomeScreen.tsx, compile on save
-                </Text>
-                    <Icon name="card-giftcard" />
+                    <FlatList
+                        data={store.getState().alarm.alarms}
+                        renderItem={this.renderAlarms}
+                    />
                 </Content>
             </Container>
         );

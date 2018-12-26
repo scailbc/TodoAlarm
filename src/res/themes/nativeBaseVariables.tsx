@@ -96,7 +96,7 @@ export default {
 
     // Color
     brandPrimary: "#263238", // Material Blue Grey 900
-    brandInfo: "#62B1F6",
+    brandInfo: "#4caf50", // Material Green 500
     brandSuccess: "#5cb85c",
     brandDanger: "#d9534f",
     brandWarning: "#f0ad4e",
@@ -206,6 +206,22 @@ export default {
     // Spinner
     defaultSpinnerColor: "#45D56E",
     inverseSpinnerColor: "#1A191B",
+
+    // Switch
+    get switchThumbColor() {
+        return this.brandInfo;
+    },
+    get switchDisabledThumbColor() {
+        return color(this.switchThumbColor)
+            .lighten(0.7)
+            .hex();
+    },
+    get switchTrackColor() {
+        return{
+            true: this.switchDisabledThumbColor,
+            false: undefined,
+        };
+    },
 
     // Tab
     tabDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
