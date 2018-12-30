@@ -6,6 +6,7 @@ export default (variables = variable) => {
 			height: null,
 		},
 		height: variables.inputHeightBase,
+		maxHeight: variables.inputHeightBase,
 		color: variables.inputColor,
 		paddingLeft: 5,
 		paddingRight: 5,

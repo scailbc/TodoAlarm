@@ -21,6 +21,7 @@ export default (variables = variable) => {
 				marginRight: 0,
 			},
 		},
+		backgroundColor: variables.brandInfo,
 	};
 
 	return fabTheme;

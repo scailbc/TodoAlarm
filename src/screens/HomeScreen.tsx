@@ -11,15 +11,19 @@ import I18n from "../res/i18n/I18n";
 import { store } from "../res/configureStore";
 
 // third party
-import { Container, Header, Content, Body, Text } from "native-base";
+import { Container, Fab, Header, Icon, Content, Body, Text } from "native-base";
 import Tts from "react-native-tts";
 
+// actions
 import { setAlarms, deleteAlarm } from "../actions/AlarmAction";
+
+// styles
+import commonStyles from "../res/themes/commonStyles";
 
 interface HomeProps {
     navigation: {
         goBack: () => void,
-        navigate: (routeName: string, params: any) => void,
+        navigate: (routeName: string, params?: any) => void,
         state: {
             key: string,
             routeName: string,
@@ -44,6 +48,10 @@ export default class HomeScreen extends Component<HomeProps, any> {
         }, 10000);
     }
 
+    onCreateAlarmPress = () => {
+        this.props.navigation.navigate("AlarmEdit");
+    }
+
     renderAlarms = ({ item }) => {
         return (
             <AlarmItem alarm={item} />
@@ -56,11 +64,15 @@ export default class HomeScreen extends Component<HomeProps, any> {
                 <Header>
                     <Body><Text>{I18n.t("app_name")}</Text></Body>
                 </Header>
-                <Content>
+                <Content contentContainerStyle={commonStyles.fullPage}>
                     <FlatList
                         data={store.getState().alarm.alarms}
                         renderItem={this.renderAlarms}
                     />
+                    <Fab position="bottomRight"
+                        onPress={this.onCreateAlarmPress}>
+                        <Icon name="add" />
+                    </Fab>
                 </Content>
             </Container>
         );

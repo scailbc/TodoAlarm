@@ -1,6 +1,7 @@
 import Day from "./Day";
 
 import ObjectID from "bson-objectid";
+import moment from "moment";
 
 export default class Alarm {
 
@@ -54,5 +55,17 @@ export default class Alarm {
 
     getTimeString(): string {
         return this.toDate().toLocaleTimeString( undefined, {hour: "numeric", minute: "numeric" }).substring(0, 5);
+    }
+
+    /**
+     * Set time from a time string
+     * @param time in format "HH:mm"
+     */
+    setTime(time: string): void {
+        const t = moment(time, "HH:mm");
+        if ( t.isValid() ) {
+            this.hour = t.hour();
+            this.minute = t.minute();
+        }
     }
 }
