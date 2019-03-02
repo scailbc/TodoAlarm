@@ -13,9 +13,11 @@ import { store } from "../res/configureStore";
 // third party
 import { Container, Fab, Header, Icon, Content, Body, Text } from "native-base";
 import Tts from "react-native-tts";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
+import { AnyAction, Dispatch } from "redux";
 
 // actions
-import { setAlarms, deleteAlarm } from "../actions/AlarmAction";
+import { setAlarmAt } from "../actions/AlarmAction";
 
 // styles
 import commonStyles from "../res/themes/commonStyles";
@@ -32,30 +34,38 @@ interface HomeProps {
     screenProps: any;
 }
 
-export default class HomeScreen extends Component<HomeProps, any> {
-    componentDidMount() {
-        setTimeout(() => {
-            Tts.setDefaultLanguage("it-IT");
-            Tts.speak("Incredibile, funziona " + I18n.t("app_name"));
-            Tts.voices().then(voices => console.log(voices));
-            const alarms: Alarm[] = [new Alarm("uno"), new Alarm("due"), new Alarm("tre")];
-            alarms.forEach( (a, index) => {
-                a.hour = index;
-                a.repeat = [Day.monday, Day.weekend];
-            });
-            store.dispatch(setAlarms(alarms));
-            store.dispatch(deleteAlarm(alarms[1]));
-        }, 10000);
-    }
+interface HomeStoreProps {
+    alarms: Alarm[];
+}
+
+interface HomeDispatchProps {
+    setAlarmAt: (alarm: Alarm, index: number) => AnyAction;
+}
+
+/**
+ * Home page, holding the list of alarms
+ */
+class HomeScreen extends Component<HomeProps & HomeStoreProps & HomeDispatchProps, any> {
 
     onCreateAlarmPress = () => {
         this.props.navigation.navigate("AlarmEdit");
     }
 
-    renderAlarms = ({ item }) => {
+    alarmKeyExtractor = (item: Alarm) => {
+        return item.id;
+    }
+
+    renderAlarms = ({ item, index }) => {
         return (
-            <AlarmItem alarm={item} />
+            <AlarmItem alarm={item} onEnabledValueChange={this.onEnabledValueChange(item, index)} />
         );
+    }
+
+    onEnabledValueChange = (alarm: Alarm, index: number) => {
+        return (newValue: boolean) => {
+            alarm.enabled = newValue;
+            this.props.setAlarmAt(alarm, index);
+        };
     }
 
     render() {
@@ -66,7 +76,8 @@ export default class HomeScreen extends Component<HomeProps, any> {
                 </Header>
                 <Content contentContainerStyle={commonStyles.fullPage}>
                     <FlatList
-                        data={store.getState().alarm.alarms}
+                        data={this.props.alarms}
+                        keyExtractor={this.alarmKeyExtractor}
                         renderItem={this.renderAlarms}
                     />
                     <Fab position="bottomRight"
@@ -97,3 +108,17 @@ const styles: any = StyleSheet.create({
         marginBottom: 5,
     },
 });
+
+const mapStateToProps: MapStateToProps<HomeStoreProps, HomeStoreProps, HomeStoreProps> = (state: any) => {
+    return {
+        alarms: state.alarm.alarms,
+    };
+};
+
+const mapDispatchToProps: MapDispatchToProps<HomeDispatchProps, HomeDispatchProps> = (dispatch: Dispatch<any>): HomeDispatchProps => {
+    return {
+        setAlarmAt: (alarm: Alarm, index: number) => dispatch(setAlarmAt(alarm, index)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

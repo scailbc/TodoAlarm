@@ -14,8 +14,11 @@ interface DaysEnabledProps {
 
 export default function DaysEnabled(props: DaysEnabledProps) {
     const { repeat, onDayPress } = props;
+    // @ts-ignore
     const anyDay: boolean = repeat.includes(Day.any);
+    // @ts-ignore
     const workweek: boolean = repeat.includes(Day.workweek);
+    // @ts-ignore
     const weekend: boolean = repeat.includes(Day.weekend);
     return (
         <View style={styles.daysContainer}>

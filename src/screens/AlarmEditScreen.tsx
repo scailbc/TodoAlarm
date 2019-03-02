@@ -15,7 +15,10 @@ import moment from "moment";
 import { Body, Button, Container, Content, Footer, FooterTab, Header, Input, InputGroup, Text} from "native-base";
 import DatePicker from "react-native-datepicker";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import { Dispatch } from "redux";
+import { AnyAction, Dispatch } from "redux";
+
+// actions
+import { addAlarm } from "../actions/AlarmAction";
 
 // styles
 import commonStyles from "../res/themes/commonStyles";
@@ -44,7 +47,7 @@ interface AlarmEditStoreProps {
 }
 
 interface AlarmEditDispatchProps {
-
+    addAlarm: (alarm: Alarm) => AnyAction;
 }
 
 class AlarmEditScreen extends React.Component<AlarmEditProps & AlarmEditStoreProps & AlarmEditDispatchProps, AlarmEditState> {
@@ -116,6 +119,10 @@ class AlarmEditScreen extends React.Component<AlarmEditProps & AlarmEditStorePro
         let alarm = new Alarm(name);
         alarm.setTime(time);
         alarm.repeat = repeat;
+        this.props.addAlarm(alarm);
+
+        // Go to main screen
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -156,12 +163,12 @@ class AlarmEditScreen extends React.Component<AlarmEditProps & AlarmEditStorePro
                 </Content>
                 <Footer>
                     <FooterTab>
-                    <Button full transparent onPress={this.onBackPress}>
-                        <Text>{I18n.t("cancel")}</Text>
-                    </Button>
-                    <Button full transparent onPress={this.onSavePress}>
-                        <Text>{I18n.t("save")}</Text>
-                    </Button>
+                        <Button full transparent onPress={this.onBackPress}>
+                            <Text>{I18n.t("cancel")}</Text>
+                        </Button>
+                        <Button full transparent onPress={this.onSavePress}>
+                            <Text>{I18n.t("save")}</Text>
+                        </Button>
                     </FooterTab>
                 </Footer>
             </Container>
@@ -196,7 +203,7 @@ const mapStateToProps: MapStateToProps<AlarmEditStoreProps, AlarmEditStoreProps,
 
 const mapDispatchToProps: MapDispatchToProps<AlarmEditDispatchProps, AlarmEditDispatchProps> = (dispatch: Dispatch<any>): AlarmEditDispatchProps => {
     return {
-
+        addAlarm: (alarm) => dispatch(addAlarm(alarm)),
     };
 };
 

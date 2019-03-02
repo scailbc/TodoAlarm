@@ -8,6 +8,17 @@ import * as Redux from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 
 /**
+ * Add a new alarm to the lest
+ * @param alarms the new alarm object
+ */
+export function addAlarm( alarm: Alarm ): Redux.AnyAction {
+    return {
+        type: ALARM.ADD,
+        payload: alarm,
+    };
+}
+
+/**
  * Delete the alarm at the given index from the list.
  * It use javascript splice:  If greater than the length of the array,
  * actual starting index will be set to the length of the array. If negative,
@@ -41,5 +52,17 @@ export function setAlarms( alarms: Array<Alarm> ): Redux.AnyAction {
     return {
         type: ALARM.SET,
         payload: alarms,
+    };
+}
+
+/**
+ * Set an alarm to the given position, replacing the existent
+ * @param alarm the new alarms list
+ * @param index the position in the array
+ */
+export function setAlarmAt( alarm: Alarm, index: number ): Redux.AnyAction {
+    return {
+        type: ALARM.SET_AT,
+        payload: {alarm, index},
     };
 }
